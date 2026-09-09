@@ -1,0 +1,57 @@
+{% extends 'main/base.html' %}
+{% block title %}
+    News details for entry {{ article.id }}
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="headline">
+            <div class="title">{{ article.title|escape }}</div>
+            <div class="timestamp">{{ article.timestamp }}</div>
+            <div style="clear: both"></div>
+        </div>
+        <div class="text">
+            {{ article.text|escape|linebreaksbr }}
+        </div>
+    </div>
+    <div class="container">
+        <div class="headline">Comments</div>
+        {% if article.comment_set.count %}
+            <table>
+            {% for c in article.comment_set.all %}
+                <tr class="comment_line">
+                    <td class="column_header">{{ c.author }}:</td>
+                    <td>{{ c.text|escape|linebreaksbr }}</td>
+                </tr>
+            {% endfor %}
+            </table>
+        {% else %}
+            No comments
+        {% endif %}
+    </div>
+    <div class="link_bottom">
+        <a href="{% url 'news:articles' %}">Back</a>
+    </div>
+{% endblock %}
+
+<div class="container">
+    <div class="headline">New Comment</div>
+    <span class="error"> {{ error }}</span>
+    <form method="post" action="">
+        {% csrf_token %}
+        <input type="hidden" name="save_comment" value="1"/>
+        <table>
+            <tr class="comment line">
+                <td class="column identifier">Your name:</td>
+                <td><input type ="text" name="visitor_name"
+                           value="{{ visitor_name }}"/></td>
+            </tr>
+            <tr class="comment line">
+                <td class="column identifier">Comment:</td>
+                <td>
+                    <textarea name="comment_text">{{ comment_text }}</textarea>
+                </td>
+            </tr>
+        </table>
+        <input type="submit" value="Submit" />
+    </form>
+</div>

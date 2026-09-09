@@ -1,0 +1,22 @@
+{% extends 'main/base.html' %}
+{% block title %}News Overview{% endblock %}
+{% block content %}
+    {% for m in articles %}
+        <div class="container">
+            <div class="headline">
+                <div class="title">{{ m.title|escape }}</div>
+                <div class="timestamp">
+                    {{ m.timestamp|date:'d/m/Y' }} at
+                    {{ m.timestamp|time:'H:i' }}
+                </div>
+                <div style="clear: both"></div>
+            </div>
+            <div class="text">
+                {{ m.text|escape|linebreaksbr }}
+                <div class="link_bottom">
+                    <a href="{% url 'news:articles_detail' m.id %}">Details</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}
